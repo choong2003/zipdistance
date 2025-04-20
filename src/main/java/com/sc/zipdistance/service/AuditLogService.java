@@ -1,8 +1,5 @@
 package com.sc.zipdistance.service;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 import com.sc.zipdistance.model.entity.AuditLog;
 import com.sc.zipdistance.model.entity.User;
 import com.sc.zipdistance.repository.AuditLogRepository;
@@ -13,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class AuditLogService {
@@ -34,8 +34,8 @@ public class AuditLogService {
     public void log(String action, UUID userId, String description) {
         //to log into file if there is null userid
         if (userId == null) {
-            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-            logger.info("Action: {}, User: {}, Details: {}", action, userName, description);
+//            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+            logger.info("Action: {}, User: {}, Details: {}", action, "null", description);
             return;
         }
         if (logToDb) {

@@ -2,7 +2,7 @@
 <Configuration status="WARN">
     <Appenders>
         <!-- File Appender for audit.log -->
-        <File name="AuditFile" fileName="logs/audit.log" append="true">
+        <File name="AuditFile" fileName="logs/log.log" append="true">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
 

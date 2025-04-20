@@ -5,15 +5,12 @@ import com.sc.zipdistance.model.dto.CreateUserDto;
 import com.sc.zipdistance.model.dto.UpdateUserDto;
 import com.sc.zipdistance.model.dto.UserDto;
 import com.sc.zipdistance.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/admin/users")
@@ -22,6 +19,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Operation(summary = "Create a new user", description = "Requires 'CREATE_USER' authority.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User created successfully"),
+            @ApiResponse(responseCode = "400", description = "User creation failed")
+    })
     @PreAuthorize("hasAuthority('CREATE_USER')")
     @PostMapping
     public BaseResponse<UserDto> createUser(@RequestBody CreateUserDto createUser) {
@@ -33,6 +35,11 @@ public class UserController {
         return new BaseResponse<UserDto>(null, "ERROR", "User creation failed");
     }
 
+    @Operation(summary = "Update an existing user", description = "Requires 'UPDATE_USER' authority.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated successfully"),
+            @ApiResponse(responseCode = "400", description = "User update failed")
+    })
     @PreAuthorize("hasAuthority('UPDATE_USER')")
     @PutMapping
     public BaseResponse<UserDto> updateUser(@RequestBody UpdateUserDto updateUser) {
@@ -44,6 +51,11 @@ public class UserController {
         return new BaseResponse<UserDto>(null, "ERROR", "User update failed");
     }
 
+    @Operation(summary = "Get user by ID", description = "Requires 'VIEW_USERS' authority.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User retrieved successfully"),
+            @ApiResponse(responseCode = "400", description = "User retrieval failed")
+    })
     @PreAuthorize("hasAuthority('VIEW_USERS')")
     @GetMapping("/{id}")
     public BaseResponse<UserDto> getUserById(@PathVariable String id) {

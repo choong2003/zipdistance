@@ -1,21 +1,20 @@
 package com.sc.zipdistance.util;
 
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.sc.zipdistance.model.entity.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
@@ -46,13 +45,13 @@ public class JwtUtil {
 
         // Build JWT with separate claims
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .subject(userDetails.getUsername()) // Updated method
                 .claim("userId", ((CustomUserDetails) userDetails).getUserId())
-                .claim("roles", roles)          // Add roles as a list
-                .claim("permissions", permissions)  // Add permissions as a list
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + getExpiration())) // e.g., 10h token
-                .signWith(privateKey, SignatureAlgorithm.RS256)
+                .claim("roles", roles) // Add roles as a list
+                .claim("permissions", permissions) // Add permissions as a list
+                .issuedAt(new Date()) // Updated method
+                .expiration(new Date(System.currentTimeMillis() + getExpiration())) // Updated method
+                .signWith(privateKey) // Updated method, RS256 is inferred from the key
                 .compact();
     }
 

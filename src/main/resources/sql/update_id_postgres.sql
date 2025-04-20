@@ -1,0 +1,1 @@
+SELECT setval('postcode_id_seq', (SELECT MAX(id) FROM postcodelatlng));

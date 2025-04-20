@@ -27,8 +27,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/v1/admin/auth/**").permitAll()
                         .requestMatchers("/", "/api/v1/dev/**").permitAll()
+                        .requestMatchers("/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**").permitAll()
                         //todo add role checking
                         .anyRequest().authenticated())
+//                .csrf((csrf) -> csrf.ignoringRequestMatchers("/h2-console/**"))
                 .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

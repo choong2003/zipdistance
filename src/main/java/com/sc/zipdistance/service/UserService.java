@@ -1,10 +1,5 @@
 package com.sc.zipdistance.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.sc.zipdistance.model.dto.CreateUserDto;
 import com.sc.zipdistance.model.dto.UpdateUserDto;
 import com.sc.zipdistance.model.dto.UserDto;
@@ -13,6 +8,11 @@ import com.sc.zipdistance.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -48,15 +48,17 @@ public class UserService {
     }
 
     public UserDto updateUser(UpdateUserDto updateUserDto) {
-        Optional<User> userOptional = userRepository.findByEmail(updateUserDto.getEmail());
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setName(updateUserDto.getName());
-            user.setPhoneNo(updateUserDto.getPhoneNo());
-            User updatedUser = userRepository.save(user);
-            //Audit logs the action
-            auditLogService.log("UPDATE_USER", updatedUser.getId(), "User updated");
-            return convertToDto(updatedUser);
+        if (updateUserDto != null) {
+            Optional<User> userOptional = userRepository.findByEmail(updateUserDto.getEmail());
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                user.setName(updateUserDto.getName());
+                user.setPhoneNo(updateUserDto.getPhoneNo());
+                User updatedUser = userRepository.save(user);
+                //Audit logs the action
+                auditLogService.log("UPDATE_USER", updatedUser.getId(), "User updated");
+                return convertToDto(updatedUser);
+            }
         }
         return null;
     }
@@ -74,19 +76,7 @@ public class UserService {
         return null;
     }
 
-    // Authenticate user by verifying the password
-    public Optional<User> authenticateUser(String email, String rawPassword) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            boolean isValid = passwordEncoder.matches(rawPassword, user.getPasswordHash());
-            return isValid ? userOptional : Optional.empty();
-        }
-        return Optional.empty();
-    }
-
-    public UserDto convertToDto(User user) {
+    private UserDto convertToDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
