@@ -12,6 +12,11 @@ multiple profiles. The API is secured with JWT authentication and role-based acc
     - Create databases: `devdb` and `fulldb`.
 - **Git**: Install [Git](https://git-scm.com/downloads) to clone the repo.
 
+## Notes
+
+To use the full postal code dataset, navigate to `src/main/resources/sql` and extract postalcode.zip. The full postal
+code SQL file is too large to commit to GitHub, so it is provided in compressed form.
+
 ## Setup
 
 1. Clone the repository:
@@ -28,7 +33,7 @@ multiple profiles. The API is secured with JWT authentication and role-based acc
       CREATE ROLE testadmin WITH LOGIN PASSWORD 'testadmin' SUPERUSER;
       ```
     - Update `src/main/resources/application-dev-postgres.properties` and `application-dev-postgres-full.properties`
-      with your credentials if there is any difference.
+      with your credentials if there is any changes.
 
 ## Cleaning
 
@@ -52,22 +57,22 @@ Run with a specific profile using Maven:
 
 - **dev-h2** (H2 simplify the postcode):
   ```bash
-  mvn spring-boot:run -Dspring-boot.run.profiles=dev-h2
+  mvn spring-boot:run "-Dspring-boot.run.profiles=dev-h2"
   ```
 
 - **dev-h2-full** (H2 full postcode):
   ```bash
-  mvn spring-boot:run -Dspring-boot.run.profiles=dev-h2-full
+  mvn spring-boot:run "-Dspring-boot.run.profiles=dev-h2-full"
   ```
 
 - **dev-postgres** (PostgreSQL):
   ```bash
-  mvn spring-boot:run -Dspring-boot.run.profiles=dev-postgres
+  mvn spring-boot:run "-Dspring-boot.run.profiles=dev-postgres"
   ```
 
 - **dev-postgres-full** (PostgreSQL full postcode):
   ```bash
-  mvn spring-boot:run -Dspring-boot.run.profiles=dev-postgres-full
+  mvn spring-boot:run "-Dspring-boot.run.profiles=dev-postgres-full"
   ```
 
 Or build and run the JAR:
@@ -180,7 +185,9 @@ are provided for testing:
 ## Swagger API Documentation
 
 You can find the API documentation in Swagger
-format [here](https://raw.githubusercontent.com/username/repository-name/main/resources/swagger/swagger-ui.yaml).
+format [here](https://github.com/choong2003/zipdistance/blob/main/src/main/resources/swagger/swagger-api.yaml).
+
+You can also access the Swagger UI at `http://localhost:8080/swagger-ui/index.html` after starting the application.
 
 ## Troubleshooting
 
